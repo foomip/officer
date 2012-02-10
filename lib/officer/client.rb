@@ -26,6 +26,10 @@ module Officer
       disconnect
       connect
     end
+    
+    def close
+      disconnect
+    end
 
     def lock name, options={}
       result = execute :command => 'lock', :name => name_with_ns(name),

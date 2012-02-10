@@ -5,14 +5,14 @@
 
 Gem::Specification.new do |s|
   s.name = %q{officer}
-  s.version = "0.8.7"
+  s.version = "0.8.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Chad Remesch"]
-  s.date = %q{2011-01-22}
+  s.authors = ["Chad Remesch", "Nelson Pascoal"]
+  s.date = %q{2011-02-10}
   s.default_executable = %q{officer}
   s.description = %q{Officer is designed to help you coordinate distributed processes and avoid race conditions.}
-  s.email = %q{chad@remesch.com}
+  s.email = %q{chad@remesch.com, nelsondcp@gmail.com}
   s.executables = ["officer"]
   s.extra_rdoc_files = [
     "LICENSE",
@@ -70,7 +70,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<eventmachine>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<daemons>, [">= 0"])
-    s.add_dependency(%q<choice>, [">= 0"])
+    s.add_dependency(%q<choice>, ["= 0.1.5"])
   end
 end
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'officer'
+require '/Users/foomip/Documents/Programming/Projects/officer/lib/officer'
 
 daemon_options = {
   :dir_mode   => :system,
@@ -44,6 +44,21 @@ def parse_command_line
     option :help do
       long '--help'
     end
+    
+    option :piddir do
+      long '--pid-dir'
+      desc 'Set directory where pid file will be saved (default /var/run)'
+    end
+  end
+end
+
+# check here for override on pid directory - or else forced to run script as root (what a bad idea)
+ARGV.each do |arg|
+  if arg =~ /^\-\-pid\-dir\=/
+  	pid_file = arg.split('=', 2)[1]
+  	daemon_options[:dir_mode] = :normal
+  	daemon_options[:dir] = pid_file
+  	ARGV.delete arg
   end
 end
 

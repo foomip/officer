@@ -70,7 +70,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<eventmachine>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<daemons>, [">= 0"])
-    s.add_dependency(%q<choice>, ["= 0.1.5"])
+    s.add_dependency(%q<choice>, [">= 0"])
   end
 end
 

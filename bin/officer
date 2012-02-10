@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require '/Users/foomip/Documents/Programming/Projects/officer/lib/officer'
+require 'officer'
 
 daemon_options = {
   :dir_mode   => :system,

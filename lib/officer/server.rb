@@ -10,13 +10,20 @@ module Officer
     def initialize params={}
       @semaphore = Mutex.new
       set_running(false)
-
-      @params = params
-
-      params[:port] ||= 11500
-      params[:host] ||= '0.0.0.0'
+      
+      if params[:sock].nil? or params[:sock] == 'TCP'
+        params[:sock] = 'TCP' if params[:sock].nil?
+        params[:port] ||= 11500
+        params[:host] ||= '0.0.0.0'
+      elsif not params[:sock].nil? and params[:sock] == 'UNIX'
+        params[:sockfile] ||= '/var/run/officer.sock'
+      else
+        raise "Unknown option '#{params[:sock]} received for --socket-option - cannot start server"
+      end
       params[:stats] ||= false
       params[:log_level] ||= 'error'
+
+      @params = params
 
       Officer::Log.set_log_level params[:log_level]
     end
@@ -35,9 +42,23 @@ module Officer
         if @enable_shutdown_port
           EM::start_server '127.0.0.1', 11501, ShutdownConnection
         end
-
-        EM::start_server @params[:host], @params[:port], Connection::Connection
-
+        
+        if @params[:sock] == 'TCP'
+          EM::start_server @params[:host], @params[:port], Connection::Connection
+        else
+          EM::start_unix_domain_server @params[:sockfile], Connection::Connection
+        end
+        
+        Signal.trap("INT") do
+          Officer::Log.info 'Shutting down officer server'
+          EM.stop { exit }
+        end
+        
+        Signal.trap("TERM") do
+          Officer::Log.info 'Shutting down officer server'
+          EM.stop { exit }
+        end
+        
         set_running(true)
       end
 

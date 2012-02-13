@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'officer'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer')
+#require 'officer'
 
 daemon_options = {
   :dir_mode   => :system,
@@ -14,7 +15,7 @@ def parse_command_line
   if ARGV.include? '--'
     ARGV.slice! 0..ARGV.index('--')
   end
-
+  
   Choice.options do
     option :host do
       short '-h'
@@ -28,10 +29,22 @@ def parse_command_line
       desc 'The port to listen on (default: 11500)'
       cast Integer
     end
+    
+    option :sock do
+      short '-o'
+      long '--socket-option=OPTION'
+      desc 'Whether to start service on tcp host and port (TCP - default), or start service on a unix socket (UNIX)'
+    end
+    
+    option :sockfile do
+      short '-f'
+      long '--sock-file=FILE'
+      desc 'Full path and name to unix socket file to create (default /var/run/officer.sock) - only used if --socket-option=UNIX'
+    end
 
     option :log_level do
       short '-l'
-      long '--log-level'
+      long '--log-level=LEVEL'
       desc 'Set the log level to debug, info, or error (default: error)'
     end
 
@@ -46,7 +59,7 @@ def parse_command_line
     end
     
     option :piddir do
-      long '--pid-dir'
+      long '--pid-dir=PATH'
       desc 'Set directory where pid file will be saved (default /var/run)'
     end
   end

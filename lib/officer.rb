@@ -14,9 +14,9 @@ require 'choice'
 # require 'ruby-debug'
 
 # Application.
-require 'officer/log'
-require 'officer/commands'
-require 'officer/connection'
-require 'officer/lock_store'
-require 'officer/server'
-require 'officer/client'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/log')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/commands')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/connection')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/lock_store')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/server')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/officer/client')

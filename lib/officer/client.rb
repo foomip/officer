@@ -15,8 +15,12 @@ module Officer
 
   class Client
     def initialize options={}
-      @host = options[:host] || 'localhost'
-      @port = options[:port] || 11500
+      if options[:sockfile].nil?
+        @host = options[:host] || 'localhost'
+        @port = options[:port] || 11500
+      else
+        @sockfile = options[:sockfile]
+      end
       @namespace = options[:namespace]
 
       connect
@@ -83,8 +87,12 @@ module Officer
   private
     def connect
       raise AlreadyConnectedError if @socket
-
-      @socket = TCPSocket.new @host, @port.to_i
+      
+      if @sockfile.nil?
+        @socket = TCPSocket.new @host, @port.to_i
+      else
+        @socket = UNIXSocket.new @sockfile
+      end
       @socket.fcntl Fcntl::F_SETFD, Fcntl::FD_CLOEXEC
     end
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require File.expand_path(File.dirname(__FILE__) + '/../lib/officer')
-#require 'officer'
+#require File.expand_path(File.dirname(__FILE__) + '/../lib/officer')
+require 'officer'
 
 daemon_options = {
   :dir_mode   => :system,

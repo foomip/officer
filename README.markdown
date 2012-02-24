@@ -22,8 +22,21 @@ Officer's help information:
 Run Officer in the foreground with full logging and statistics:
     sudo officer run -- -l debug -s
 
+Run officer in the foreground with full logging and statistics, but listening on a Unix socket:
+	sudo officer run -- -l debug -s -o UNIX -f /var/run/officer.sock
+
+Same command as above, but change pid and sock path to a non-priveleged path to run officer
+as a non-privileged user:
+	officer run -- --pid-dir=/tmp -l debug -s -o UNIX -f /writeable/path/officer.sock
+
 Run Officer in the background (production mode) and listen on a specific IP and port:
     sudo officer start -- -h 127.0.0.1 -p 9999
+
+Same command as above, but running as unprivileged user
+	officer start -- --pid-dir=/writeable/path -h 127.0.0.1 -p 9999
+
+Same command as above, but running as unprivileged user and listening on an Unix socket
+	officer start -- --pid-dir=/writeable/path -o UNIX -f /writeable/path/officer.sock
 
 ### Other notes:
 
@@ -38,9 +51,13 @@ Run Officer in the background (production mode) and listen on a specific IP and 
     require 'rubygems'
     require 'officer'
 
-### Create a client object
+### Create a client object - Officer listening on TCP 
 
     client = Officer::Client.new :host => 'localhost', :port => 11500
+
+### Create a client object - Officer listening on UNIX Socket
+
+    client = Officer::Client.new :sockfile => '/sock/path/officer.sock'
 
 Options:
 
@@ -85,6 +102,10 @@ Options:
     client.reconnect
 
 - Useful if you use Officer with Phusion Passenger and smart spawning.  See [Passenger's documentation](http://www.modrails.com/documentation/Users%20guide%20Apache.html#_smart_spawning_gotcha_1_unintential_file_descriptor_sharing) for more information.
+
+### Close connection to officer service
+
+    client.close
 
 
 ### Show locks
